@@ -1,0 +1,18 @@
+.fuc {
+    display:"flex";
+    flex-flow: row wrap;
+    background-color: rebeccapurple;
+}
+.felx-container > div {
+     height:100%;
+}
+
+#qq {
+    display:"flex";
+    flex-flow: row wrap;
+    
+}
+
+.felx-container div:nth-child(1) {
+    background-color: #444444;
+}
