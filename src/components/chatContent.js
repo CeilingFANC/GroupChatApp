@@ -11,7 +11,10 @@ class ChatContent extends Component{
     }
 
     componentDidMount(){
-        //const socket = socketIOClient("http://127.0.0.1:4000");
+        this.socket = socketIOClient("http://127.0.0.1:4000");
+        this.socket.on('new User',function(data){
+            console.log(data);
+        })
     }
     tempAdd = (id,text)=>{
         return {author:id,text:text};
@@ -29,15 +32,16 @@ class ChatContent extends Component{
  
     }
     render(){
-        return <div>
+        return <div style={{overflowY:'scroll',height:'90vh',}}>
             
             {this.state.texts.map((val,index)=>
-                                
-                                    <ChatCard key={index} left={index%2===0} message={val}/>
-                                            
-                                )}
+                            <ChatCard key={index} left={index%2===0} message={val}/>        
+            )}
 
-            <ChatInput handleKeyPress={this.handleKey}/>
+            <div style={{bottom:30,position:'absolute',width:'100%'}}>
+                <ChatInput handleKeyPress={this.handleKey}/>
+            </div>
+            
         </div>;
     }
 }

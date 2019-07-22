@@ -6,6 +6,7 @@ import { deepOrange, deepPurple } from '@material-ui/core/colors';
 const useStyles = makeStyles({
     avatar: {
       margin: 10,
+      
       color: '#fff',
       backgroundColor: deepOrange[500],
     },
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
     const classes = useStyles();
     const letter = props.name?props.name.charAt(0).toUpperCase():'-';
     return (
-        <Avatar className={classes.avatar} >{letter}}</Avatar>
+        <Avatar className={classes.avatar} >{letter}</Avatar>
     );
   }
 

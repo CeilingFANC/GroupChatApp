@@ -43,8 +43,10 @@ export default function ChatContainer(){
                     </Toolbar>
                 </AppBar>  
                 <Paper className={classes.paper}> 
-              
-                    <ChatContent user={user} conversations={arr}/>
+                    <div style={{position:'relative'}}>
+                        <ChatContent user={user} conversations={arr}/>
+                    </div>
+                    
                 </Paper>
             </Grid>
             <Grid item xs>

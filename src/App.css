@@ -8,3 +8,9 @@ body {
 #root > div, .App > div {
   height: 99vh;
 }
+.clearfix::after { 
+  content: " ";
+  display: block; 
+  height: 0; 
+  clear: both;
+}
