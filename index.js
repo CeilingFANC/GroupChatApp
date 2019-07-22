@@ -21,7 +21,18 @@ app.use(function(req, res, next) {
 app.use('/api/threads',thread_router);
 app.use('/api/messages',message_router);
 
-  
-app.listen(5000,()=>{
+
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
+const file = require('./chatConnection')(io);
+
+
+http.listen(4000, function(){
+  console.log('listening on *:3000');
+});
+
+
+app.listen(5001,()=>{
     console.log("lisening to port 5000");
 });
