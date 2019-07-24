@@ -1,7 +1,6 @@
 import React from 'react';
 import ChatPanel from './chatPanel';
 import ChatContent from './chatContent';
-
 //import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -25,26 +24,31 @@ const useStyles = makeStyles(theme => ({
 
 export default function ChatContainer(){
 
-
-    
+    const [currentThread, setCurrentThread] = React.useState('');
+ 
+    const fun = thread => setCurrentThread(thread);   
+    const [currentUser, setCurrentUser] = React.useState('');
+    const changeUser = user => setCurrentUser(user);
+    console.log(currentUser);
     const classes = useStyles();
 
-    const arr =[{'author':'a','text':"my name is a"},{'author':'b','text':"my name is b"}];
-    const user = {'id':'c','name':'ccc'};
+    const arr =[];
     const ls = [{'room':{'name':'first'}},{'room':{'name':'second'}}];
     return <div className="classes.root" style={{padding:'10px'}} >
+
+
         <Grid container spacing={2} alignItems="stretch">
             <Grid item xs={9}>
                 <AppBar position="static" color="default">
                     <Toolbar>
                     <Typography variant="h6" color="inherit">
-                        Current
+                        {currentThread?currentThread:'Void'}
                     </Typography>
                     </Toolbar>
                 </AppBar>  
                 <Paper className={classes.paper}> 
                     <div style={{position:'relative'}}>
-                        <ChatContent user={user} conversations={arr}/>
+                        <ChatContent user={currentUser} conversations={arr} current={currentThread} />
                     </div>
                     
                 </Paper>
@@ -58,7 +62,7 @@ export default function ChatContainer(){
                     </Toolbar>
                 </AppBar>  
                 <Paper className={classes.paper}>
-                    <ChatPanel user={user} threads={ls}/>
+                    <ChatPanel user={currentUser} threads={ls} setCurrent={fun} setUser={changeUser}/>
                 </Paper> 
             </Grid>
         </Grid>

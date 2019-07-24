@@ -34,7 +34,7 @@ export default function ChatCard(props) {
         <Zoom in={true}>
             <div className={'clearfix'} style={{width:'100%',overflow:'auto',marginBottom:'20px'}}>
                 {props.left?<div style={{width:'50%',display: 'inline-block'}}>&nbsp;</div>:""}
-                <Wrapper leftAlign={props.left} name={'c'}/>
+                <Wrapper leftAlign={props.left} name={props.message.author}/>
                 <Card className={classes.card} style={side}>
                     <CardContent>
 
