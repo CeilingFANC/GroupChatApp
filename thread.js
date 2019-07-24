@@ -7,7 +7,7 @@ const Thread = require('./DAO/threads');
 const Message = require('./DAO/message');
 
 
-
+//  :5001/api/threads
 
 router.use(bodyParser.json());
 
@@ -24,9 +24,22 @@ router.get('/',(req,res)=>{
     })
 
 });
+//get all thread by owner
+router.get('/owner/:owner_id',(req,res)=>{
+    Thread.find({owner_id:req.params.owner_id})
+        .exec(function(err,threads){
+        if(err){
+            console.log(err);
+            res.status(500).send(err);
+        }else{
+            console.log(threads);
+            res.send(threads);
+        }
+    })
 
+});
 
-
+//create new Thread
 router.post('/',(req,res)=>{
     let newThread = new Thread(req.body);
 
@@ -39,6 +52,7 @@ router.post('/',(req,res)=>{
                 let rep = JSON.parse(JSON.stringify(req.body));
                 rep.owner_id = req.body.participant_id.reduce((prev,val)=>val!==req.body.owner_id?val:prev);
                 rep.thread_id = id;
+                rep.nickName = 'bug'
                 let newThread2 = new Thread(rep);
                 
                 thread.thread_id=id;    
@@ -60,6 +74,7 @@ router.post('/',(req,res)=>{
 
 });
 
+
 router.get('/:id',(req,res)=>{
     Thread.findById(req.params.id)
         .populate('participant_id')
@@ -73,6 +88,8 @@ router.get('/:id',(req,res)=>{
             }
         }) 
 });
+
+
 router.put('/:id',(req,res)=>{
     let rep = JSON.parse(JSON.stringify(req.body));
     delete rep._id;
@@ -89,6 +106,7 @@ router.put('/:id',(req,res)=>{
     })
 });
 
+//find all message under given thread id
 router.get('/:thread_id/messages',(req,res)=>{
     Message.find({thread_id:req.params.thread_id})
         .exec(function(err,messages){
