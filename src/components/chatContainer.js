@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import {connect} from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ChatContainer(){
+function ChatContainer(props){
 
     const [currentThread, setCurrentThread] = React.useState('');
  
@@ -34,6 +35,7 @@ export default function ChatContainer(){
 
     const arr =[];
     const ls = [{'room':{'name':'first'}},{'room':{'name':'second'}}];
+    console.log(props.current);
     return <div className="classes.root" style={{padding:'10px'}} >
 
 
@@ -42,13 +44,13 @@ export default function ChatContainer(){
                 <AppBar position="static" color="default">
                     <Toolbar>
                     <Typography variant="h6" color="inherit">
-                        {currentThread?currentThread:'Void'}
+                        {props.current.thread.thread_id?props.current.thread.thread_id:'Echo'}
                     </Typography>
                     </Toolbar>
                 </AppBar>  
                 <Paper className={classes.paper}> 
                     <div style={{position:'relative'}}>
-                        <ChatContent user={currentUser} conversations={arr} current={currentThread} />
+                        <ChatContent conversations={arr}  />
                     </div>
                     
                 </Paper>
@@ -62,7 +64,7 @@ export default function ChatContainer(){
                     </Toolbar>
                 </AppBar>  
                 <Paper className={classes.paper}>
-                    <ChatPanel user={currentUser} threads={ls} setCurrent={fun} setUser={changeUser}/>
+                    <ChatPanel  />
                 </Paper> 
             </Grid>
         </Grid>
@@ -70,3 +72,16 @@ export default function ChatContainer(){
     
 }
 
+
+const mapStateToProps = state => {
+    return {
+      current: state.current,
+    };
+  };
+  
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer);

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ChooseManager from './chooseManager';
 import axios from 'axios';
+import * as actions from '../redux/actions/actions';
+import {connect} from 'react-redux';
 
 class ChatPanel extends Component{
     constructor(props){
@@ -9,8 +11,10 @@ class ChatPanel extends Component{
     }
     userUpdate = (selection) => (useless,target)=>{
         if(selection==='currentUser'){
-            this.fetchRooms(target._id);
+            console.log('trigger')
             this.props.setUser(target);
+            this.props.getRooms();
+            
         }
 
         const temp = {};
@@ -42,9 +46,8 @@ class ChatPanel extends Component{
                     };
         axios.post('http://localhost:5001/api/threads/',thread)
                     .then(res=>{
-                        
-                        this.fetchRooms(this.state.currentUser._id);
-                        
+                        this.props.getRooms()
+                        //this.fetchRooms(this.state.currentUser._id);
                         console.log(res)
                     })
                     .catch(err => console.log(err));
@@ -53,16 +56,20 @@ class ChatPanel extends Component{
 
     clickHandler = e =>{
         console.log(e.target.innerHTML);
-        this.props.setCurrent(e.target.innerHTML);
+        const thread_id = e.target.innerHTML;
+        const room = this.props.roomList.rooms.reduce(
+            (room,val)=>room=val.thread_id==thread_id?val:room,{});
+        console.log(room);
+        this.props.setThread(room);
        
     }
 
     render(){
-        console.log(this.state)
+        console.log(this.props)
         return <div >
             List of room:
             <div onClick={this.clickHandler}>
-                {this.state.threads.map((val,index)=><Room key={index} room={val}/>)}
+                {this.props.roomList.rooms.map((val,index)=><Room key={index} room={val}/>)}
             </div>
             
 
@@ -89,4 +96,27 @@ function Room(props){
     return <div>{props.room.thread_id}</div>
 }
 
-export default ChatPanel;
+
+const mapStateToProps = state => {
+    return {
+      current: state.current,
+      roomList: state.roomList
+    };
+  };
+  
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: user =>{
+            dispatch(actions.setUser(user));
+        },
+        setThread: thread =>{
+            dispatch(actions.setThread(thread));
+        },    
+        getRooms: ()=>{
+            dispatch(actions.getRooms());
+        },
+    
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatPanel);

@@ -1,4 +1,4 @@
-const roomList = (state={rooms:[],loading:false},action)=>{
+const roomListReducer = (state={rooms:[],loading:false},action)=>{
     switch(action.type){
         case "LIST_FETCH_REQUEST":
             return {
@@ -15,6 +15,7 @@ const roomList = (state={rooms:[],loading:false},action)=>{
             return {
                 ...state,
                 loading:false,
+                
             };
         default:
                 return state;        
@@ -22,4 +23,4 @@ const roomList = (state={rooms:[],loading:false},action)=>{
 
 }
 
-export default roomList;
+export default roomListReducer;
