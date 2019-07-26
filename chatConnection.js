@@ -11,9 +11,10 @@ exports = module.exports = function(io){
       });
       socket.on('connect thread',function(data){
         console.log('connect thread'+data)
-        socket.join(data.connect);
+        console.log(data.connect)
+        socket.join(data.connect.thread_id);
         if(data.disconnect){
-          socket.leave(data.disconnect);
+          socket.leave(data.disconnect.thread_id);
         }
       });
 
