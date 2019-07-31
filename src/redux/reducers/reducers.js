@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-import chatRoomReducer from './chatRoomReducer';
 import roomListReducer from './roomListReducer';
 import currentUserReducer from './currentUserReducer';
 const reducers = combineReducers({

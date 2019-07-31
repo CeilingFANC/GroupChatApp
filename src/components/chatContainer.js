@@ -1,6 +1,7 @@
 import React from 'react';
 import ChatPanel from './chatPanel';
 import ChatContent from './chatContent';
+import AddRoom from './addRoom';
 //import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -25,16 +26,9 @@ const useStyles = makeStyles(theme => ({
 
 function ChatContainer(props){
 
-    const [currentThread, setCurrentThread] = React.useState('');
- 
-    const fun = thread => setCurrentThread(thread);   
-    const [currentUser, setCurrentUser] = React.useState('');
-    const changeUser = user => setCurrentUser(user);
-    console.log(currentUser);
     const classes = useStyles();
 
     const arr =[];
-    const ls = [{'room':{'name':'first'}},{'room':{'name':'second'}}];
     console.log(props.current);
     return <div className="classes.root" style={{padding:'10px'}} >
 
@@ -44,7 +38,7 @@ function ChatContainer(props){
                 <AppBar position="static" color="default">
                     <Toolbar>
                     <Typography variant="h6" color="inherit">
-                        {props.current.thread.thread_id?props.current.thread.thread_id:'Echo'}
+                        {props.current.thread.thread_id?props.current.thread.thread_name:'Echo'}
                     </Typography>
                     </Toolbar>
                 </AppBar>  
@@ -66,8 +60,26 @@ function ChatContainer(props){
                 <Paper className={classes.paper}>
                     <ChatPanel  />
                 </Paper> 
+                
+                {
+                    !props.current.user._id?'':
+                    <Grid item xs>
+                        <AppBar position="static" color="default">
+                            <Toolbar>
+                            <Typography variant="h6" color="inherit">
+                                New Room
+                            </Typography>
+                            </Toolbar>
+                        </AppBar>  
+                        <Paper className={classes.paper}>
+                            <AddRoom  />
+                        </Paper> 
+                    </Grid>
+                }
             </Grid>
+            
         </Grid>
+        
     </div>;
     
 }

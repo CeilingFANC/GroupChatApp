@@ -49,9 +49,9 @@ class ChooseManager extends Component{
             return;
         }
         console.log(this.state.data[index])
-        const manager = {};
-        manager._id = this.state.data[index]._id;
-        manager.name = this.state.data[index].name
+        const manager = {...this.state.data[index]};
+        //manager._id = this.state.data[index]._id;
+        //manager.name = this.state.data[index].name
 
         this.setState({current:manager});
         this.props.userUpdate('manager',manager)

@@ -5,6 +5,8 @@ import ChatCard from './chatCard';
 
 import {connect} from 'react-redux';
 
+import axios from 'axios';
+
 //props
 //
 class ChatContent extends Component{
@@ -24,9 +26,40 @@ class ChatContent extends Component{
             //console.log(data);
         })
        // console.log(this.props)
+       // this.updateMessages();
+
         
     }
-
+    updateMessages = () =>{
+        if(!this.props.current.thread.thread_id){
+            console.log(this.props);
+            return;
+        }
+        axios.get('http://localhost:5001/api/threads/'+this.props.current.thread.thread_id+'/messages')
+            .then(res=>{
+                console.log(res);
+                this.setState((state,props)=>{
+                    let t = this.merge(res.data,state.texts);
+                    return {texts:t};
+                })
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+    }
+    merge = (a,b) =>{
+        let c = [...a];
+        let map = {};
+        for(let val of a){
+            map[val._id]=val;
+        }
+        for(let val of b){
+            if(!map.hasOwnProperty(val._id)){
+                c.push(val);
+            }
+        }
+        return c;
+    }
     //reset room
     componentDidUpdate(prevProps){
         console.log('update thread connect'+this.props);
@@ -76,7 +109,7 @@ class ChatContent extends Component{
 
         
         return <div style={{overflowY:'scroll',height:'90vh',}}>
-            
+            <button onClick={this.updateMessages}>load history</button>
             {this.state.texts.map((val,index)=>
                             <ChatCard key={index} left={user._id===val.author_id} message={val}/>        
             )}

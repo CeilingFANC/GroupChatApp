@@ -1,9 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 
 import AvatarWithAlt from './avatarWithAlt';
@@ -53,6 +51,8 @@ export default function ChatCard(props) {
 function Wrapper(props){
     const style = {};
     style.float = props.leftAlign?'left':'right';
+    style.marginLeft = 5;
+    style.marginRight = 5;
     return <div style={style}>
         <AvatarWithAlt name={props.name} />
     </div>
