@@ -39,26 +39,41 @@ router.get('/owner/:owner_id',(req,res)=>{
 
 });
 
+function copyThreadObject(body,newOwnerId,thread_id,nickName){
+    let rep = JSON.parse(JSON.stringify(body));
+    rep.owner_id = newOwnerId;
+    rep.thread_id = thread_id;
+    rep.nickName = nickName?nickName:'';
+    return rep;
+}
+
+
 //create new Thread
 router.post('/',(req,res)=>{
-    let newThread = new Thread(req.body);
-
+    
+    let rep = JSON.parse(JSON.stringify(req.body));
+    rep.nickName = req.body.participant_id.reduce((red,val)=>val._id===rep.owner_id?val.name:red,'')
     console.log("here")
+    console.log(req.body)
+    let newThread = new Thread(rep);
     newThread.save()
             .then(thread=>{
                 let id = thread._id;
-                let promise_arr = [];
-                
-                let rep = JSON.parse(JSON.stringify(req.body));
-                rep.owner_id = req.body.participant_id.reduce((prev,val)=>val!==req.body.owner_id?val:prev);
-                rep.thread_id = id;
-                rep.nickName = 'bug'
-                let newThread2 = new Thread(rep);
-                
-                thread.thread_id=id;    
+                thread.thread_id=id;
+       
+                // create rest thread for other participant
 
+
+                let promise_arr = req.body.participant_id
+                    .filter(newOwner=>newOwner._id!==req.body.owner_id) 
+                    .map(newOwner=>{
+                        console.log(newOwner)
+                        let newThread2 = new Thread(copyThreadObject(req.body,newOwner._id,id,newOwner.name));
+                        return newThread2.save();
+                    })            
+
+                //update original thread_id
                 promise_arr.push(Thread.findOneAndUpdate({_id:id},thread));  
-                promise_arr.push(newThread2.save());
                 return Promise.all(promise_arr);
             })
             .then(mass=>{

@@ -1,3 +1,5 @@
+const Message = require('./DAO/message');
+
 exports = module.exports = function(io){
     io.sockets.on('connection', function (socket) {
       console.log("a new user");
@@ -7,6 +9,15 @@ exports = module.exports = function(io){
       });
       socket.on('new Message', function (data) {
         console.log('new message'+data.thread_id);
+
+        let newMessage = new Message(data);
+        console.log(data);
+        console.log(newMessage)
+        newMessage.save(function(err,mass){
+            if(err){
+                console.log(err);
+            }
+        })
         socket.to(data.thread_id).emit('read message',data);
       });
       socket.on('connect thread',function(data){

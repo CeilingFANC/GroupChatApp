@@ -7,9 +7,9 @@ var Schema = mongoose.Schema;
 
 var MessageSchema = new Schema({
     thread_id: {type:Schema.Types.ObjectId,ref:'Thread'},
-    user_id: {type:Schema.Types.ObjectId,ref:'Employee'},
+    author_id: {type:Schema.Types.ObjectId,ref:'Employee'},
     created_at: {type:Date,default:Date.now},
-    context: String,
+    text: String,
 
 });
 
